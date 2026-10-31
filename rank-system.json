@@ -1,0 +1,81 @@
+{
+  "schemaVersion": 1,
+  "recordedOn": "2026-10-31",
+  "status": "implemented-in-prototype",
+  "systemName": "생태계 복원형 직위",
+  "ranks": [
+    {
+      "minimumPoints": 0,
+      "title": "새싹 복원대원",
+      "icon": "🌱"
+    },
+    {
+      "minimumPoints": 100,
+      "title": "맑은 물 지킴이",
+      "icon": "💧"
+    },
+    {
+      "minimumPoints": 200,
+      "title": "물고기 친구 지킴이",
+      "icon": "🐟"
+    },
+    {
+      "minimumPoints": 300,
+      "title": "강가 숲 지킴이",
+      "icon": "🌳"
+    },
+    {
+      "minimumPoints": 400,
+      "title": "습지 생명 수호대장",
+      "icon": "🌾"
+    },
+    {
+      "minimumPoints": 500,
+      "title": "낙동강 생태계 복원 영웅",
+      "icon": "🏅"
+    }
+  ],
+  "maximumPoints": 500,
+  "regionBasePoints": {
+    "상류": 18,
+    "중류": 21,
+    "하류": 26,
+    "습지": 35
+  },
+  "missionsPerRegion": 5,
+  "fullRestoration": {
+    "requiredChips": 20,
+    "awardedTitle": "낙동강 생태계 복원 영웅",
+    "changesPoints": false
+  },
+  "timeScoring": {
+    "fullScoreSeconds": 30,
+    "penaltyIntervalSeconds": 30,
+    "pointsLostPerInterval": 1,
+    "freezeAtSeconds": 120,
+    "maximumTimePenalty": 3
+  },
+  "hint": {
+    "firstUsePenalty": 1,
+    "penaltyOncePerMission": true,
+    "pausesTimerWhileOpen": true
+  },
+  "revealedAnswer": {
+    "points": 0,
+    "chipMayBePlaced": true,
+    "redrawRestoresPoints": false
+  },
+  "display": {
+    "showCurrentRank": true,
+    "showPointsToNextRank": true,
+    "rankButtonOpensAllLevels": true,
+    "celebratePromotion": true
+  },
+  "persistence": {
+    "scope": "same-browser localStorage; no cross-device sync",
+    "rankKey": "nakdong-rank-v1",
+    "pointsKey": "nakdong-points-v1",
+    "missionKey": "nakdong-missions-v1",
+    "newExpeditionResetsProgress": true
+  }
+}
