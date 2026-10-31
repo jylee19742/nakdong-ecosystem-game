@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "recordedOn": "2026-10-31",
+  "recordedOn": "2026-11-01",
   "status": "implemented-in-prototype",
   "systemName": "생태계 복원형 직위",
   "ranks": [
@@ -35,7 +35,7 @@
       "icon": "🏅"
     }
   ],
-  "maximumPoints": 500,
+  "maximumPoints": 900,
   "regionBasePoints": {
     "상류": 18,
     "중류": 21,
@@ -62,8 +62,9 @@
   },
   "revealedAnswer": {
     "points": 0,
-    "chipMayBePlaced": true,
-    "redrawRestoresPoints": false
+    "chipMayBePlaced": false,
+    "redrawRestoresPoints": false,
+    "returnsToDeck": true
   },
   "display": {
     "showCurrentRank": true,
@@ -77,5 +78,7 @@
     "pointsKey": "nakdong-points-v1",
     "missionKey": "nakdong-missions-v1",
     "newExpeditionResetsProgress": true
-  }
+  },
+  "baseMaximumPoints": 500,
+  "regionCompletionBonus": 100
 }
