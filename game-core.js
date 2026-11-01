@@ -1,0 +1,15 @@
+class MissionGame {
+ constructor(missions,saved=null){this.missions=missions;this.byId=new Map(missions.map(m=>[m.id,m]));this.completed=new Set();this.active=null;this.lastReturned={};this.decks={};for(const r of new Set(missions.map(m=>m.region)))this.decks[r]=this.shuffle(missions.filter(m=>m.region===r).map(m=>m.id));if(saved&&saved.version===1&&Array.isArray(saved.completed)){for(const id of saved.completed)if(this.byId.has(id))this.completed.add(id);if(saved.active&&this.byId.has(saved.active)&&!this.completed.has(saved.active))this.active=saved.active;for(const r of Object.keys(this.decks)){const ids=Array.isArray(saved.decks?.[r])?saved.decks[r]:[];const valid=ids.length===this.decks[r].length&&new Set(ids).size===ids.length&&ids.every(id=>this.byId.get(id)?.region===r);if(valid)this.decks[r]=ids;}}}
+ shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+ draw(r){if(this.active)return this.byId.get(this.active);let choices=(this.decks[r]||[]).filter(id=>!this.completed.has(id));if(choices.length>1)choices=choices.filter(id=>id!==this.lastReturned[r]);if(!choices.length)return null;const id=choices[Math.floor(Math.random()*choices.length)];this.active=id;return this.byId.get(id)}
+ complete(){if(!this.active)return false;this.completed.add(this.active);this.active=null;return true}
+ returnCard(){if(!this.active)return false;const m=this.byId.get(this.active);this.lastReturned[m.region]=m.id;this.shuffle(this.decks[m.region]);this.active=null;return true}
+ remaining(r){return this.missions.filter(m=>m.region===r&&!this.completed.has(m.id)).length}
+ serialize(){return {version:1,completed:[...this.completed],active:this.active,decks:this.decks}}
+}
+
+function normalizeMissionAnswer(value){return String(value??'').normalize('NFC').trim().replace(/[\s\p{P}]/gu,'').replace(/(?:인것같아요|인것같아|인것같습니다|같아요|같아|입니다|이에요|예요|이야|이다|야|이요|요)$/u,'')}
+
+function isMissionAnswerCorrect(m,value){const aliases={"1-1": ["좁다", "좁아", "좁아요", "좁습니다", "좁음", "더 좁다", "더 좁아", "더 좁아요", "강 폭이 좁다", "강 폭이 좁아", "강 폭이 좁아요", "좁은 강폭", "상류가 좁다", "상류가 더 좁아", "상류가 하류보다 좁다", "상류가 하류보다 좁아", "상류의 강 폭이 하류보다 좁다"], "1-2": ["빠르다", "빨라", "빨라요", "빠릅니다", "빠름", "더 빨라", "더 빠르다", "더 빨라요", "물살이 빠르다", "물살이 빨라", "물살이 빨라요", "물살이 빠릅니다", "빠른 물살", "상류가 빠르다", "상류가 빨라", "상류가 더 빠르다", "상류가 더 빨라", "상류가 더 빨라요", "상류가 하류보다 빠르다", "상류가 하류보다 빨라", "상류가 하류보다 빨라요", "상류의 물살이 빠르다", "상류의 물살이 더 빠르다", "상류의 물살이 하류보다 빠르다", "상류의 물살이 하류보다 빨라"], "2-1": ["더 둥글고 매끄럽다", "둥글고 매끄럽다", "둥글고 매끄러워", "둥글고 매끄러워요", "더 둥글고 매끄러워요", "둥글다", "둥글어", "둥글어요", "둥근 돌", "더 둥글다", "더 둥글어", "매끄럽다", "매끄러워", "매끈하다", "매끈해", "둥글고 매끈해"]};const raw=String(value??'').trim().replace(/\s+/g,'');const variants=[raw,raw.replace(/(?:이라고생각해요|라고합니다|인것같아요|인것같습니다)$/u,''),raw.replace(/라고생각해요$/u,'')].map(normalizeMissionAnswer);const accepted=[m.answer,m.chip,...(aliases[m.id]||[])].map(normalizeMissionAnswer);return variants.some(given=>given.length>0&&accepted.includes(given))}
+
+if(typeof module!=='undefined')module.exports={MissionGame,normalizeMissionAnswer,isMissionAnswerCorrect};
